@@ -26,6 +26,7 @@ function App() {
   const [list,setList]=useState([])
   const [uploadData,setUploadData]=useState(false)
   const [load,setLoad]=useState(false)
+  const [isexiste,setIsexiste]=useState(false)
   // recuperation des donnes dans la bd de firebase
   const fetchData = async () => {
     try {
@@ -94,19 +95,26 @@ function App() {
 
   //enregistrement d'un passeport
   const onSubmit = async (data) => {
-    setUploadData(true)//etat de chargemnt
-    const file = data.image[0]//fichier image
-    // reference vers le store
-    const storageRef = ref(storage, `images/${file.name}`);
-
+    setIsexiste(false)
+    const findCardId = list.find(item=>item.cartId===data.numCart)
+    if(findCardId===undefined){
+      setUploadData(true)//etat de chargemnt
+      const file = data.image[0]//fichier image
+      // reference vers le store
+      const storageRef = ref(storage, `images/${file.name}`);
+  
+      
+      uploadBytes(storageRef, file).then(async ()=>{ // envoie de l'image
+        const urlImage = await getDownloadURL(storageRef)//recuperation de l'url de l'image
+        saveData(data,urlImage,file.name)//appel de la fonction de sauvegard
+        setUploadData(false)//etat de chargement
+      }).catch(err=>{
+        console.log(err);
+      })
+    }else{
+      setIsexiste(true)
+    }
     
-    uploadBytes(storageRef, file).then(async ()=>{ // envoie de l'image
-      const urlImage = await getDownloadURL(storageRef)//recuperation de l'url de l'image
-      saveData(data,urlImage,file.name)//appel de la fonction de sauvegard
-      setUploadData(false)//etat de chargement
-    }).catch(err=>{
-      console.log(err);
-    })
 
 
   }
@@ -119,7 +127,9 @@ function App() {
          <p className='fs-3 fw-bold' style={{paddingTop:"25px"}}>Enregistrement de passeport</p>
       </div>
       <section className='row'>
+     
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className='mt-5 col-lg-4 col-md-12 col-sm-12'>
+      {isexiste&&<p className='alert alert-danger' role="alert">ce passeport est déjà enregistrer</p>}
         <div className="form-floating mb-3">
           <input {...register("Nom")} type="text" className="form-control h-25" id="floatingInput" placeholder="Nom"/>
           <label htmlFor="floatingInput">Nom</label>
@@ -132,7 +142,7 @@ function App() {
         <p className='text-danger'>{errors.Pays?.message}</p>
         <div className="form-floating mb-3">
           <input {...register("numCart")}  type="text" className="form-control h-25" id="floatingInput" placeholder='number'/>
-          <label htmlFor="floatingInput">numéro de carte</label>
+          <label htmlFor="floatingInput">numéro de passeport</label>
         </div>
         <p className='text-danger'>{errors.numCart?.message}</p>
         <div className="form-floating mb-3">
