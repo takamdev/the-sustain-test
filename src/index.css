@@ -1,0 +1,8 @@
+.search{
+    position: relative !important;
+}
+.iconSearch{
+    position: absolute;
+    right: 3px;
+    top: 4px;
+}
