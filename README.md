@@ -1,5 +1,5 @@
 # fromulaire d'enregistrement des passeports
-#le difference champ sont
+* le difference champ sont
 - numero de carte 
 - date de delivrance
 - date d'expiration
