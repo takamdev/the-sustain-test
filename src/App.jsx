@@ -28,7 +28,7 @@ function App() {
   const [load,setLoad]=useState(false)
   // recuperation des donnes dans la bd de firebase
   useEffect(()=>{
-    setLoad(true)
+    setLoad(true)//etat de chargement
     const fetchData = async () => {
       try {
         // Référence à la collection "passager"
@@ -56,7 +56,9 @@ function App() {
     resolver: yupResolver(schema),
   })
 
+//sauvegard
   const saveData = async (data,url,fileName)=>{
+    //reference vers la collection
     const ref =collection(db,"passager")
     // construction des données
     const passeport = {
@@ -84,23 +86,26 @@ function App() {
     try {
      const res = await addDoc(ref,passeport)
        // ajout du passeport
-       const resId =res.id
-       setList((v)=>([...v,{...passeport,id:resId}]))
+       const resId =res.id//recuperation de id
+       setList((v)=>([...v,{...passeport,id:resId}]))//mise a jour dans le dom
        
     } catch (error) {
       console.log(error);
     }
   }
 
+  //enregistrement d'un passeport
   const onSubmit = async (data) => {
-    setUploadData(true)
-    const file = data.image[0]
+    setUploadData(true)//etat de chargemnt
+    const file = data.image[0]//fichier image
+    // reference vers le store
     const storageRef = ref(storage, `images/${file.name}`);
-    //recuperation de l'url de l'image
+
+    
     uploadBytes(storageRef, file).then(async ()=>{ // envoie de l'image
       const urlImage = await getDownloadURL(storageRef)//recuperation de l'url de l'image
-      saveData(data,urlImage,file.name)
-      setUploadData(false)
+      saveData(data,urlImage,file.name)//appel de la fonction de sauvegard
+      setUploadData(false)//etat de chargement
     }).catch(err=>{
       console.log(err);
     })

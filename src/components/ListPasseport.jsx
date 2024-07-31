@@ -38,9 +38,9 @@ function ListPasseport({data}) {
   resolver: yupResolver(schema),
 })
 
-
+// modification des donnees d'un passeport
 const onSubmit = (edit) =>{
-  setLoadUpdate(true)
+  setLoadUpdate(true)//etat de chargement
   //reference vers l'encien fichier
   const storageRef = ref(storage, `images/${defaultData.fileName}`);
 
@@ -50,7 +50,9 @@ const onSubmit = (edit) =>{
   uploadBytes(storageRef, newFile).then( async (snapshot) => {
     console.log('Nouveau fichier téléchargé avec succès', snapshot);
     const urlImage = await getDownloadURL(storageRef)//recuperation de l'url de l'image
+//modification des donnees
 
+     //reference vers le document a modifier
     const docRef = doc(db, 'passager', defaultData.id);
 
     // Les nouvelles données du document
@@ -79,10 +81,16 @@ const onSubmit = (edit) =>{
   setDoc(docRef, newData)
     .then(() => {
       console.log('Document créé ou remplacé avec succès');
-      setLoadUpdate(false)
+      setLoadUpdate(false)//etat de chargement
+      // modification au niveau de la'ffichage dans le dom
+      
+      //filtrage
       let newPasseport=passport.filter(item=>item.id!==defaultData.id)
       newPasseport = [...newPasseport,newData]
+      //modification
       setPasseport(newPasseport)
+
+      //fermeture du modal de modification
       document.querySelector('#modalClose').click()
     })
     .catch((error) => {
@@ -95,7 +103,7 @@ const onSubmit = (edit) =>{
 
 
 }
-
+// initialisatiion des donnees
  useEffect(()=>{
     const contryList = filtre.map(item=>item.contry)
     const uniqueArray = [...new Set(contryList)];
@@ -103,11 +111,13 @@ const onSubmit = (edit) =>{
     setPasseport(data)
  },[data])
 
+//recherche pas numero de passeport
  const search = ()=>{
-  if(!loadSearch){
+  if(!loadSearch){//bloquage de l'icone search pendant la recherche
     setLoadSearch(true)
-    if(valueSearch.trim()!==""){
-      const result = passport.find(item=>item.cartId.includes(valueSearch))
+    if(valueSearch.trim()!==""){//verification de la valeur du champ de recherche
+      const result = passport.find(item=>item.cartId.includes(valueSearch))//recherche
+      //verification du resultat et mise a jour de la liste de passeport
       if(result!==undefined)setPasseport([result])
         else setPasseport([])
       
@@ -116,21 +126,28 @@ const onSubmit = (edit) =>{
 
 
  }
+ // filtre pas pays
  const select = (value)=>{
-  if(value.trim()!==""){
+  
+  if(value.trim()!==""){//verification de la valeur champ
+    //filtrage
     const result= filtre.filter(item =>item.contry===value)
+    //modification de la liste
     setPasseport(result)
   }else{
+    //initialisation de la liste si valeur du champ vide
     setPasseport(data)
   }
  }
 
+ //suppression d'un passeport
  const deletePasseport = (item)=>{
+  // recuperer l'id firebase du passeport
   const id = item.id
-
+//demande de confirmation
   const confirm = window.confirm('voulez vous vraiment supprimer se passeport ?')
   if(confirm){
-    //console.log(item);
+    //reference du document a supprimer
     const docRef = doc(db, 'passager', id);
     // Suppression du document
     deleteDoc(docRef)
@@ -139,7 +156,8 @@ const onSubmit = (edit) =>{
           setPasseport(result)
 
           //suppression de l'image
-          const fileRef = ref(storage, `images/${item.fileName}`);
+
+          const fileRef = ref(storage, `images/${item.fileName}`);//reference de l'image
           deleteObject(fileRef).then(() => {
             console.log('Fichier supprimé avec succès');
           }).catch((error) => {
