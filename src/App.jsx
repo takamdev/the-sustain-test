@@ -85,15 +85,12 @@ function App() {
     }
     //envoie des données
     try {
-     const res = await addDoc(ref,passeport)
-       // ajout du passeport
-      // const resId =res.id//recuperation de id
-       //setList((v)=>([...v,{...passeport,id:resId}]))//mise a jour dans le dom
-       fetchData();
+       await addDoc(ref,passeport)
+       fetchData();//mise a jour dans le dom
     } catch (error) {
       console.log(error);
     }
-  }
+   }
 
   //enregistrement d'un passeport
   const onSubmit = async (data) => {
