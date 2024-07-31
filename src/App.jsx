@@ -27,24 +27,25 @@ function App() {
   const [uploadData,setUploadData]=useState(false)
   const [load,setLoad]=useState(false)
   // recuperation des donnes dans la bd de firebase
+  const fetchData = async () => {
+    try {
+      // Référence à la collection "passager"
+      const querySnapshot = await getDocs(collection(db, 'passager'));
+      // Transformation des documents en un tableau d'objets
+      const usersList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      //console.log(usersList[0].dateDel.toString().replaceAll('\n',"").replaceAll(" ",""));
+      setList(usersList)
+      setLoad(false)
+    } catch (error) {
+      console.error("Erreur lors de la récupération des utilisateurs:", error);
+    }
+  };
+
   useEffect(()=>{
     setLoad(true)//etat de chargement
-    const fetchData = async () => {
-      try {
-        // Référence à la collection "passager"
-        const querySnapshot = await getDocs(collection(db, 'passager'));
-        // Transformation des documents en un tableau d'objets
-        const usersList = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        //console.log(usersList[0].dateDel.toString().replaceAll('\n',"").replaceAll(" ",""));
-        setList(usersList)
-        setLoad(false)
-      } catch (error) {
-        console.error("Erreur lors de la récupération des utilisateurs:", error);
-      }
-    };
 
     fetchData();
   },[])
@@ -86,9 +87,9 @@ function App() {
     try {
      const res = await addDoc(ref,passeport)
        // ajout du passeport
-       const resId =res.id//recuperation de id
-       setList((v)=>([...v,{...passeport,id:resId}]))//mise a jour dans le dom
-       
+      // const resId =res.id//recuperation de id
+       //setList((v)=>([...v,{...passeport,id:resId}]))//mise a jour dans le dom
+       fetchData();
     } catch (error) {
       console.log(error);
     }
