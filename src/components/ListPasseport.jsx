@@ -225,7 +225,7 @@ const onSubmit = (edit) =>{
              <input value={valueSearch} onChange={(e)=>{setValueSearch(e.target.value),setLoadSearch(false)}}  type="text" className="form-control  mb-3" id="floatingInput" placeholder="identifiant"/>
              <AiOutlineSearch  className="fs-3 iconSearch" role="button" onClick={search} />
              </p>
-            <select onChange={(e)=>{select(e.target.value)}} className="form-select w-25 mb-3" aria-label="Default select example">
+            <select onChange={(e)=>{select(e.target.value)}} className="form-select w-25 mb-4" aria-label="Default select example">
                 <option value="" selected>fitrer pas pays</option>
                 {
                     filter.map((item,key)=>{
