@@ -167,7 +167,7 @@ function App() {
         <p className='text-danger'>{errors.image?.message}</p>
         <button type="submit" disabled={uploadData} className='btn btn-primary'>{uploadData?"enrégistrer...":"enrégistrer"} </button>
       </form>
-      <article className='mt-5 col-lg-6 col-md-12 col-sm-12'>
+      <article className='mt-lg-5  mt-sm-3 mt-md-3 col-lg-8 col-md-12 col-sm-12'>
         {
         load?(
           <p className='text-secondary text-center fs-3'>patientez...</p>

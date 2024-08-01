@@ -3,6 +3,23 @@
 }
 .iconSearch{
     position: absolute;
-    right: 3px;
-    top: 4px;
+    right: 20px;
+    top: 8px;
+}
+
+@media screen and (max-width:580px) {
+    .filter{
+        margin-top: 10px !important;
+       display: flex;
+       justify-content: space-between;
+    }
+
+    .select,.search{
+          width: 50%;
+    }
+    .iconSearch{
+        position: absolute;
+        right: 20px;
+        top: 12px;
+    }
 }

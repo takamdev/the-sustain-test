@@ -171,7 +171,7 @@ const onSubmit = (edit) =>{
  
  }
   return (
-    <div className="w-100">
+    <div className="w-100 pt-0 mt-0 ">
       
         <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
@@ -220,19 +220,21 @@ const onSubmit = (edit) =>{
             </div>
           </div>
         </div>
-        <div className="d-flex justify-content-between align-items-center">
-            <p className="w-25 d-flex search">
-             <input value={valueSearch} onChange={(e)=>{setValueSearch(e.target.value),setLoadSearch(false)}}  type="text" className="form-control  mb-3" id="floatingInput" placeholder="identifiant"/>
+        <div className="row filter">
+            <p className="col-lg-3 col-md-4 col-sm-5  search">
+             <input className="form-control  mb-2" style={{height:"50px"}} value={valueSearch} onChange={(e)=>{setValueSearch(e.target.value),setLoadSearch(false)}}  type="text"  id="floatingInput" placeholder="identifiant"/>
              <AiOutlineSearch  className="fs-3 iconSearch" role="button" onClick={search} />
              </p>
-            <select onChange={(e)=>{select(e.target.value)}} className="form-select w-25 mb-4" aria-label="Default select example">
-                <option value="" selected>fitrer pas pays</option>
-                {
-                    filter.map((item,key)=>{
-                        return <option key={key} value={item}>{item}</option>
-                    })
-                }
-            </select>
+            <p className="mb-2 select col-lg-3 col-md-4 col-sm-5 ms-auto">
+              <select className="form-select" style={{height:"50px"}} onChange={(e)=>{select(e.target.value)}}  aria-label="Default select example">
+                  <option value="" selected>fitrer pas pays</option>
+                  {
+                      filter.map((item,key)=>{
+                          return <option key={key} value={item}>{item}</option>
+                      })
+                  }
+              </select>
+            </p>
         </div>
           {
             passport.length ===0 ? (
