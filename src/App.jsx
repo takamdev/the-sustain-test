@@ -92,7 +92,12 @@ function App() {
       console.log(error);
     }
    }
-
+  
+   // filtrage de la liste apret la suppression d'un document
+  const filterList = (id)=>{
+   const newList = list.filter(item=>item.id!==id)
+   setList(newList)
+  }
   //enregistrement d'un passeport
   const onSubmit = async (data) => {
     setIsexiste(false)
@@ -167,7 +172,7 @@ function App() {
         load?(
           <p className='text-secondary text-center fs-3'>patientez...</p>
         ):(
-           <ListPasseport data={list}/>
+           <ListPasseport data={list} filterList={filterList}/>
         )
        }
         

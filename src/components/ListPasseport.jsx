@@ -21,7 +21,7 @@ const schema = yup
   })
   .required()
 
-function ListPasseport({data}) {
+function ListPasseport({data,filterList}) {
 
  const filtre = data
  const [passport ,setPasseport]=useState(data)
@@ -154,7 +154,7 @@ const onSubmit = (edit) =>{
       .then(() => {
           const result= passport.filter(item=>item.id!==id)
           setPasseport(result)
-
+          filterList(id)
           //suppression de l'image
 
           const fileRef = ref(storage, `images/${item.fileName}`);//reference de l'image
